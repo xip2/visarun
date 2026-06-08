@@ -1,10 +1,13 @@
+{% load static %}
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>{% block title %}Visarun{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'main/table.css' %}">
 </head>
 <body>
-$END$
+    {% block content %}{% endblock %}
 </body>
 </html>

@@ -1,0 +1,71 @@
+.table-wrapper {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    width: 70%;
+    margin-bottom: 24px;
+    margin: 0 auto;
+}
+
+/* Внутренний контейнер / padding */
+.table-wrapper > div {
+    padding: 20px;
+}
+
+/* Заголовок таблицы */
+.table-wrapper h3,
+.table-wrapper .title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 16px;
+}
+
+/* Сама таблица */
+.table-wrapper table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* Ячейки */
+.table-wrapper th,
+.table-wrapper td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.table-wrapper th {
+    background-color: #f9fafb;
+    font-weight: 500;
+    color: #374151;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+}
+
+.table-wrapper tr:last-child td {
+    border-bottom: none;
+}
+
+/* Hover эффект */
+.table-wrapper tr:hover td {
+    background-color: #e7eef5;
+}
+/* Responsive */
+@media (max-width: 768px) {
+    .table-wrapper {
+        border-radius: 8px;
+    }
+
+    .table-wrapper > div {
+        padding: 16px;
+    }
+}
+
+/* Если есть полосатые строки */
+.table-wrapper tr:nth-child(even) {
+    background-color: #f9fafb;
+}
