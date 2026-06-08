@@ -1,6 +1,6 @@
-eu,European Union
-cis,СНГ
-brics,BRICS
-asean,Юго-Восточная Азия
-shengen,Шенген
-latin,Латинская Америка
+65001,eu,European Union
+65517,cis,СНГ
+65888,brics,BRICS
+65000,asean,Юго-Восточная Азия
+65100,shengen,Шенген
+65111,latin,Латинская Америка
