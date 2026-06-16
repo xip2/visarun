@@ -7,22 +7,22 @@
         <thead>
             <tr>
                 <th>Страна</th>
-                <th>Тип визы</th> <!-- безвиз, evisa, виза по прибытии, Visa -->
-                <th>Кол-во дней без визы</th> <!-- Чистое количество  -->
+                <th>Тип визы</th>
+                <th>Кол-во дней без визы</th>
                 <th>Комментарии</th>
             </tr>
         </thead>
 
-      <tbody>
-    {% for rule in rules %}
-    <tr>
-        <td>{{ rule.name }}</td>
-        <td>{{ rule.slug }}</td>
-        <td>{{ rule.group_names|default:"-" }}</td>
-        <td>апрвр</td>
-    </tr>
-    {% endfor %}
-</tbody>
+        <tbody>
+        {% for rule in rules %}
+            <tr>
+                <td>{{ rule.name }}</td>
+                <td>{{ rule.visa_status }}</td>
+                <td>{{ rule.days }}</td>
+                <td>еее</td>
+            </tr>
+        {% endfor %}
+        </tbody>
     </table>
 </div>
 

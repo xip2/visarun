@@ -6,42 +6,53 @@ class Groups(models.Model):
         eu_name = models.CharField(max_length=50, unique=True)
         name = models.CharField(max_length=100)
 
-        class Meta:
-            verbose_name = "Country group"
-            verbose_name_plural = "Country groups"
-
         def __str__(self):
             return self.name
 
+        class Meta:
+            db_table = 'groups'
+            managed = False
 
 class Country(models.Model):
-        id = models.IntegerField(primary_key=True)
-        name = models.CharField(max_length=100, unique=True)
-        groups = models.ManyToManyField(Groups, related_name="countries", blank=True)
+    id = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=100, unique=True)
+    groups = models.ManyToManyField(Groups,through='CountryGroup',related_name='countries', blank=True,)
 
-        class Meta:
-            ordering = ["name"]
+    class Meta:
+        db_table = 'country'
+        managed = False
 
-        def __str__(self):
-            return self.name
+    def __str__(self):
+        return self.name
+
+class CountryGroup(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    country = models.ForeignKey(Country, db_column='country_id', on_delete=models.DO_NOTHING)
+    group = models.ForeignKey(Groups, db_column='groups_id', on_delete=models.DO_NOTHING)
+
+    class Meta:
+        db_table = 'country_groups'
+        managed = False
+
+class VisaType(models.Model):
+    id = models.SmallIntegerField(primary_key=True)
+    name = models.CharField(max_length=50, unique=True)
+
+    class Meta:
+        db_table = 'visa_type'
+        managed = False
 
 
-class VisaStatus(models.Model):
-        code = models.CharField(max_length=50, unique=True)
-        name = models.CharField(max_length=100)
-        description = models.TextField(blank=True)
+class CountryVisa(models.Model):
+    country = models.ForeignKey(Country, db_column='country_id', on_delete=models.DO_NOTHING)
+    name = models.CharField(max_length=255)
+    visa_type = models.ForeignKey(VisaType, db_column='visa_type', on_delete=models.DO_NOTHING)
+    days_without_visa = models.IntegerField(null=True, blank=True)
+    comments = models.TextField(null=True, blank=True)
+    date_from = models.DateField(null=True, blank=True)
+    date_to = models.DateField(null=True, blank=True)
 
-        def __str__(self):
-            return self.name
+    class Meta:
+        db_table = 'country_visa'
+        managed = False
 
-
-class VisaRule(models.Model):
-        passport_country = models.ForeignKey(Country, on_delete=models.CASCADE, related_name="visa_rules_from")
-        destination_country = models.ForeignKey(Country, on_delete=models.CASCADE, related_name="visa_rules_to")
-        status = models.ForeignKey(VisaStatus, on_delete=models.PROTECT, related_name="visa_rules")
-        days_without_visa = models.PositiveSmallIntegerField(null=True, blank=True)
-        comments = models.TextField(blank=True)
-        updated_at = models.DateTimeField(auto_now=True)
-
-        class Meta:
-            unique_together = ("passport_country", "destination_country")
