@@ -2,6 +2,18 @@
 
 {% block content %}
 
+<label>
+    <input
+        type="checkbox"
+        name="visa_free"
+        hx-get="/"
+        hx-trigger="change"
+        hx-target="#countries-table"
+        hx-swap="innerHTML"
+    >
+    Только Visa Free
+</label>
+
 <div class="table-wrapper">
     <table class="visa-table">
         <thead>
@@ -13,15 +25,8 @@
             </tr>
         </thead>
 
-        <tbody>
-        {% for rule in rules %}
-            <tr>
-                <td>{{ rule.name }}</td>
-                <td>{{ rule.visa_status }}</td>
-                <td>{{ rule.days }}</td>
-                <td>еее</td>
-            </tr>
-        {% endfor %}
+        <tbody id="countries-table">
+            {% include "countries_table.html" %}
         </tbody>
     </table>
 </div>
