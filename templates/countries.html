@@ -2,17 +2,26 @@
 
 {% block content %}
 
-<label>
-    <input
-        type="checkbox"
-        name="visa_free"
-        hx-get="/"
-        hx-trigger="change"
-        hx-target="#countries-table"
-        hx-swap="innerHTML"
-    >
-    Только Visa Free
-</label>
+<form
+    hx-get="/"
+    hx-trigger="change"
+    hx-target="#countries-table"
+    hx-swap="innerHTML"
+>
+    <label>
+        <input type="checkbox" name="visa_free">
+        Visa Free
+    </label>
+
+    <label>
+        <input type="checkbox" name="sea">
+        ЮВА
+    </label>
+    <label>
+        <input type="checkbox" name="schengen">
+        Шенген
+    </label>
+</form>
 
 <div class="table-wrapper">
     <table class="visa-table">
