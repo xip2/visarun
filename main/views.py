@@ -3,23 +3,14 @@ from django.shortcuts import render
 
 
 def countries(request):
-    visa_free = request.GET.get("visa_free")
-    sea = request.GET.get("sea")  # South-Eastern Asia
 
-    query = """
-        SELECT
-            oksm.name AS name,
-            COALESCE(vr.visa_status, '-') AS visa_status,
-            COALESCE(vr.days::text, '-') AS days
-        FROM oksm
-        LEFT JOIN country_iso ci
-            ON ci.country_code = oksm.code
-        LEFT JOIN visa_rule vr
-            ON vr.name = ci.name
-    """
 
     conditions = []
     params = []
+
+    visa_free = request.GET.get("visa_free")
+    sea = request.GET.get("sea")
+    search = request.GET.get("search")
 
     if visa_free is not None:
         conditions.append("vr.visa_status = %s")
@@ -39,8 +30,33 @@ def countries(request):
             )
         """)
 
+    if request.GET.get("cis"):
+        conditions.append("""
+            EXISTS (
+                SELECT 1
+                FROM oksm_groups og
+                WHERE og.country_id = oksm.code
+                  AND og.group_id = 65517
+            )
+        """)
+    if search:
+        conditions.append("LOWER(oksm.name) LIKE LOWER(%s)")
+        params.append(f"%{search}%")
+
+    query = """
+        SELECT
+            oksm.name AS name,
+            COALESCE(vr.visa_status, '-') AS visa_status,
+            COALESCE(vr.days::text, '-') AS days
+        FROM oksm
+        LEFT JOIN country_iso ci
+            ON ci.country_code = oksm.code
+        LEFT JOIN visa_rule vr
+            ON vr.name = ci.name
+    """
+
     if conditions:
-        query += " WHERE " + " and ".join(conditions)
+        query += " WHERE " + " AND ".join(conditions)
 
     query += " ORDER BY oksm.name"
 
@@ -58,5 +74,7 @@ def countries(request):
         if request.headers.get("HX-Request")
         else "countries.html"
     )
+    print("SEARCH:", search)
 
+    print("RESULT COUNT:", len(rules))
     return render(request, template, {"rules": rules})

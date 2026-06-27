@@ -1,27 +1,65 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="content">
 
-<form
-    hx-get="/"
-    hx-trigger="change"
-    hx-target="#countries-table"
-    hx-swap="innerHTML"
->
-    <label>
-        <input type="checkbox" name="visa_free">
-        Visa Free
-    </label>
+    <div class="layout">
 
-    <label>
-        <input type="checkbox" name="sea">
-        ЮВА
-    </label>
-    <label>
-        <input type="checkbox" name="schengen">
-        Шенген
-    </label>
-</form>
+        <aside class="sidebar">
+            <form
+                hx-get="/"
+                hx-trigger="keyup changed delay:300ms, change"
+                hx-target="#countries-table"
+                hx-swap="innerHTML"
+            >
+
+                <div class="filters">
+
+                    <fieldset>
+                        <legend>Тип визы</legend>
+
+                        <label>
+                            <input type="checkbox" name="visa_free">
+                            Visa Free
+                        </label>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Регион</legend>
+
+                        <label>
+                            <input type="checkbox" name="sea">
+                            ЮВА
+                        </label>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Объединения стран</legend>
+
+                        <label>
+                            <input type="checkbox" name="schengen">
+                            Шенген
+                        </label>
+
+                        <label>
+                            <input type="checkbox" name="cis">
+                            СНГ
+                        </label>
+                    </fieldset>
+
+                    <label class="search-box">
+                        Поиск страны:
+                        <input
+                            type="text"
+                            name="search"
+                            placeholder="Введите страну..."
+                        >
+                    </label>
+
+                </div>
+            </form>
+        </aside>
+
 
 <div class="table-wrapper">
     <table class="visa-table">
@@ -38,6 +76,7 @@
             {% include "countries_table.html" %}
         </tbody>
     </table>
-</div>
+    </div>
 
+</div>
 {% endblock %}

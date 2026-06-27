@@ -1,3 +1,102 @@
+/* Сброс */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    background: #f5f7fa;
+    color: #111827;
+}
+
+/* ===== HEADER ===== */
+
+.header {
+    background: #0f0f10;
+    border-bottom: 1px solid #242424;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-container {
+    max-width: 1400px;
+    height: 72px;
+
+    margin: 0 auto;
+    padding: 0 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* ===== LOGO ===== */
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    text-decoration: none;
+}
+
+.logo-icon {
+    font-size: 28px;
+}
+
+.logo-text {
+    color: white;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+/* ===== MENU ===== */
+
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+}
+
+.nav a {
+    color: #d1d5db;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+
+    transition: color 0.2s ease;
+}
+
+.nav a:hover {
+    color: white;
+}
+
+/* ===== CONTENT ===== */
+
+.page-content {
+    padding-top: 32px;
+}
+
+
+
+
+
+
+
+
+
+
 .table-wrapper {
     background: #ffffff;
     border: 1px solid #e5e7eb;
@@ -68,4 +167,54 @@
 /* Если есть полосатые строки */
 .table-wrapper tr:nth-child(even) {
     background-color: #f9fafb;
+}
+
+
+fieldset {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 10px;
+    min-width: 180px;
+}
+
+fieldset label {
+    display: block;
+    margin: 6px 0;
+}
+
+legend {
+    font-weight: bold;
+}
+
+.search-box {
+    display: block;
+    margin-top: 10px;
+}
+
+.content {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.layout {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+}
+
+.sidebar {
+    width: 260px;
+    flex-shrink: 0;
+}
+
+.filters {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.table-wrapper {
+    flex: 1;
+    width: auto;
+    margin-left: 0;
 }
