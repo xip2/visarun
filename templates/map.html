@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Карта мира — Visarun{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'main/map.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="map-page">
+
+        <div class="map-card">
+
+            <header class="map-head">
+                <div class="map-heading">
+                    <h1>Карта мира</h1>
+                    <p class="map-lead">
+                        Наведите на страну — покажем визовый режим и срок
+                        безвизового пребывания. Клик открывает карточку страны.
+                    </p>
+                </div>
+
+                <ul class="map-legend">
+                    <li><span class="legend-dot dot-free"></span> Без визы</li>
+                    <li><span class="legend-dot dot-electronic"></span> eVisa / eTA</li>
+                    <li><span class="legend-dot dot-arrival"></span> Виза по прибытии</li>
+                    <li><span class="legend-dot dot-required"></span> Нужна виза</li>
+                    <li><span class="legend-dot dot-other"></span> Прочие документы</li>
+                    <li><span class="legend-dot dot-none"></span> Нет данных</li>
+                </ul>
+            </header>
+
+            <div
+                class="world-map"
+                id="world-map"
+                data-svg-url="{% static 'main/world.svg' %}"
+            >
+                <p class="map-loading">Загрузка карты…</p>
+            </div>
+
+            <div class="map-tooltip" id="map-tooltip" hidden></div>
+
+            <footer class="map-foot">
+                <span>
+                    Геометрия карты:
+                    <a
+                        href="https://github.com/VictorCazanave/svg-maps"
+                        target="_blank"
+                        rel="noopener"
+                    >@svg-maps/world</a>
+                    (CC BY 4.0)
+                </span>
+                <span>Данные о визах: Visarun</span>
+            </footer>
+
+        </div>
+
+    </div>
+</div>
+
+{{ map_data|json_script:"map-data" }}
+<script src="{% static 'main/map.js' %}"></script>
+{% endblock %}

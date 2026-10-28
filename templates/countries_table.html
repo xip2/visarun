@@ -1,7 +1,73 @@
-{% for rule in rules %}
-<tr>
-    <td>{{ rule.name }}</td>
-    <td>{{ rule.visa_status }}</td>
-    <td>{{ rule.days }}</td>
-</tr>
-{% endfor %}
+{% if is_htmx %}
+<input type="hidden" id="sort-field" name="sort" value="{{ sort_key }}" hx-swap-oob="true">
+<input type="hidden" id="dir-field" name="dir" value="{{ sort_dir }}" hx-swap-oob="true">
+{% endif %}
+
+<table class="visa-table">
+    <thead>
+        <tr>
+            <th>
+                <a
+                    class="sort-link"
+                    href="{{ sort_urls.name }}"
+                    hx-get="{{ sort_urls.name }}"
+                    hx-target="#countries-table"
+                    hx-swap="innerHTML"
+                >
+                    Страна
+                    {% if sort_key == 'name' %}
+                        <span class="sort-arrow">{% if sort_dir == 'asc' %}▲{% else %}▼{% endif %}</span>
+                    {% endif %}
+                </a>
+            </th>
+            <th>
+                <a
+                    class="sort-link"
+                    href="{{ sort_urls.status }}"
+                    hx-get="{{ sort_urls.status }}"
+                    hx-target="#countries-table"
+                    hx-swap="innerHTML"
+                >
+                    Тип визы
+                    {% if sort_key == 'status' %}
+                        <span class="sort-arrow">{% if sort_dir == 'asc' %}▲{% else %}▼{% endif %}</span>
+                    {% endif %}
+                </a>
+            </th>
+            <th>
+                <a
+                    class="sort-link"
+                    href="{{ sort_urls.days }}"
+                    hx-get="{{ sort_urls.days }}"
+                    hx-target="#countries-table"
+                    hx-swap="innerHTML"
+                >
+                    Кол-во дней без визы
+                    {% if sort_key == 'days' %}
+                        <span class="sort-arrow">{% if sort_dir == 'asc' %}▲{% else %}▼{% endif %}</span>
+                    {% endif %}
+                </a>
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for rule in rules %}
+        <tr>
+            <td>
+                <a class="country-link" href="{% url 'country_detail' rule.slug %}">
+                    {{ rule.name }}
+                </a>
+            </td>
+            <td>{{ rule.visa_status }}</td>
+            <td>{{ rule.days }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="3" class="empty-row">
+                Ничего не найдено. Измените фильтры или запрос.
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

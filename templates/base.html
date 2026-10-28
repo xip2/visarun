@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <title>{% block title %}Visarun{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'main/table.css' %}">
+    {% block extra_head %}{% endblock %}
     <script src="https://unpkg.com/htmx.org@2.0.7"></script>
 </head>
 <body>
@@ -18,13 +19,14 @@
         </a>
 
         <nav class="nav">
-            <a href="/">Страны</a>
-            <a href="/about/">О проекте</a>
-            <a href="/blog/">Блог</a>
+            <a href="{% url 'countries' %}">Страны</a>
+            <a href="{% url 'map' %}">Карта</a>
+            <a href="{% url 'help' %}">Справка</a>
         </nav>
 
     </div>
 </header>
     {% block content %}{% endblock %}
+    <script src="{% static 'main/table.js' %}"></script>
 </body>
 </html>

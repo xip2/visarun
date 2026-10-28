@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ country.name }} — Visarun{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'main/country-card.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="country-page">
+
+        <a class="back-link" href="{% url 'countries' %}">← Все страны</a>
+
+        {% if card %}
+            {% include "country_card.html" %}
+        {% else %}
+            <article class="country-card">
+
+                <header class="country-head">
+                    <h1>{{ country.name }}</h1>
+                    <span class="badge badge-{{ country.visa_status|slugify }}">
+                        {{ country.visa_status }}
+                    </span>
+                </header>
+
+                <dl class="country-facts">
+                    <div>
+                        <dt>Без визы</dt>
+                        <dd>
+                            {% if country.days %}
+                                {{ country.days }} дней
+                            {% else %}
+                                —
+                            {% endif %}
+                        </dd>
+                    </div>
+                    <div>
+                        <dt>Регион</dt>
+                        <dd>{{ country.region|default:"—" }}</dd>
+                    </div>
+                    <div>
+                        <dt>Субрегион</dt>
+                        <dd>{{ country.sub_region|default:"—" }}</dd>
+                    </div>
+                    <div>
+                        <dt>Код ISO</dt>
+                        <dd>{{ country.alpha_2|default:"—" }}</dd>
+                    </div>
+                </dl>
+
+                {% if country.groups %}
+                <section class="country-section">
+                    <h2>Объединения</h2>
+                    <ul class="chips">
+                        {% for group in country.groups %}
+                        <li class="chip">{{ group.name }}</li>
+                        {% endfor %}
+                    </ul>
+                </section>
+                {% endif %}
+
+                {% if country.neighbours %}
+                <section class="country-section">
+                    <h2>Другие страны в этих объединениях</h2>
+                    <ul class="neighbours">
+                        {% for item in country.neighbours %}
+                        <li>
+                            <a href="{% url 'country_detail' item.slug %}">{{ item.name }}</a>
+                            <span class="neighbour-status">{{ item.visa_status }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </section>
+                {% endif %}
+
+            </article>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}

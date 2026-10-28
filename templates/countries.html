@@ -7,11 +7,14 @@
 
         <aside class="sidebar">
             <form
+                id="filters"
                 hx-get="/"
-                hx-trigger="keyup changed delay:300ms, change"
+                hx-trigger="input changed delay:250ms, change"
                 hx-target="#countries-table"
                 hx-swap="innerHTML"
             >
+                <input type="hidden" id="sort-field" name="sort" value="{{ sort_key }}">
+                <input type="hidden" id="dir-field" name="dir" value="{{ sort_dir }}">
 
                 <div class="filters">
 
@@ -22,6 +25,16 @@
                             <input type="checkbox" name="visa_free">
                             Visa Free
                         </label>
+
+                        <label>
+                            <input type="checkbox" name="evisa">
+                            eVisa
+                        </label>
+
+                        <label>
+                            <input type="checkbox" name="eta">
+                            eTA
+                        </label>
                     </fieldset>
 
                     <fieldset>
@@ -30,6 +43,21 @@
                         <label>
                             <input type="checkbox" name="sea">
                             ЮВА
+                        </label>
+
+                        <label>
+                            <input type="checkbox" name="latam">
+                            Латинская Америка
+                        </label>
+
+                        <label>
+                            <input type="checkbox" name="eastern_europe">
+                            Восточная Европа
+                        </label>
+
+                        <label>
+                            <input type="checkbox" name="europe">
+                            Европа
                         </label>
                     </fieldset>
 
@@ -52,7 +80,7 @@
                         <input
                             type="text"
                             name="search"
-                            placeholder="Введите страну..."
+                            placeholder="Первые буквы страны..."
                         >
                     </label>
 
@@ -61,21 +89,10 @@
         </aside>
 
 
-<div class="table-wrapper">
-    <table class="visa-table">
-        <thead>
-            <tr>
-                <th>Страна</th>
-                <th>Тип визы</th>
-                <th>Кол-во дней без визы</th>
-                <th>Комментарии</th>
-            </tr>
-        </thead>
+<div class="table-wrapper" id="countries-table">
+    {% include "countries_table.html" %}
+</div>
 
-        <tbody id="countries-table">
-            {% include "countries_table.html" %}
-        </tbody>
-    </table>
     </div>
 
 </div>

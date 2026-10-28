@@ -1,0 +1,192 @@
+{% load static %}
+<article class="country-card country-card--visa">
+
+    <header class="visa-head">
+        <div class="visa-head__identity">
+            <img class="visa-head__flag"
+                 src="{% static card.flag %}"
+                 alt="Флаг: {{ country.name }}"
+                 width="72" height="48">
+            <div class="visa-head__text">
+                <p class="visa-head__kicker">Безвизовый режим</p>
+                <h1 class="visa-head__title">{{ country.name }}</h1>
+                <p class="visa-head__rule">{{ card.rule }}</p>
+            </div>
+        </div>
+
+        <span class="visa-head__status">{{ card.status }}</span>
+    </header>
+
+    <dl class="visa-dates">
+        <div>
+            <dt>Подписано</dt>
+            <dd>{{ card.signed }}</dd>
+        </div>
+        <div>
+            <dt>Действует с</dt>
+            <dd>{{ card.from }}</dd>
+        </div>
+        <div>
+            <dt>По</dt>
+            <dd class="visa-dates__open">{{ card.until }}</dd>
+        </div>
+    </dl>
+
+    <div class="visa-facts">
+        <div class="visa-facts__item">
+            <span class="visa-facts__label">Срок пребывания</span>
+            <strong>{{ card.stay }}</strong>
+            <span class="visa-facts__muted">{{ card.stay_note }}</span>
+        </div>
+        <div class="visa-facts__item">
+            <span class="visa-facts__label">Столица</span>
+            <strong>{{ card.capital }}</strong>
+        </div>
+        <div class="visa-facts__item">
+            <span class="visa-facts__label">Господствующая религия</span>
+            <strong>{{ card.religion }}</strong>
+            {% if card.religion_share %}
+                <span class="visa-facts__muted">{{ card.religion_share }}</span>
+            {% endif %}
+        </div>
+    </div>
+
+    <section class="visa-cities">
+        <span class="visa-facts__label">Крупнейшие города</span>
+        <ul>
+            {% for city in card.cities %}
+                <li>{{ city }}</li>
+            {% endfor %}
+        </ul>
+    </section>
+
+    {% if card.ethnic_groups or card.religions %}
+    <section class="visa-people" aria-labelledby="people-title">
+
+        <div class="visa-people__head">
+            <h2 class="visa-people__title" id="people-title">Население</h2>
+            <span class="visa-people__note">{{ card.people_note }}</span>
+        </div>
+
+        <div class="visa-people__grid">
+            {% if card.ethnic_groups %}
+            <div class="people-list">
+                <h3 class="people-list__title">Национальный состав</h3>
+                <dl>
+                    {% for item in card.ethnic_groups %}
+                    <div class="people-list__row">
+                        <dt>{{ item.name }}</dt>
+                        <dd>{{ item.share }}</dd>
+                    </div>
+                    {% endfor %}
+                </dl>
+            </div>
+            {% endif %}
+
+            {% if card.religions %}
+            <div class="people-list">
+                <h3 class="people-list__title">Религии</h3>
+                <dl>
+                    {% for item in card.religions %}
+                    <div class="people-list__row">
+                        <dt>{{ item.name }}</dt>
+                        <dd>{{ item.share }}</dd>
+                    </div>
+                    {% endfor %}
+                </dl>
+            </div>
+            {% endif %}
+        </div>
+
+    </section>
+    {% endif %}
+
+    {% if card.rates %}
+    <section class="visa-rates"
+             data-rub-per-usd="{{ card.rates.rub_per_usd }}"
+             data-rub-per-local="{{ card.rates.rub_per_local }}"
+             aria-labelledby="rates-title">
+
+        <div class="visa-rates__head">
+            <h2 class="visa-rates__title" id="rates-title">Курс валют</h2>
+            <span class="visa-rates__date">ЦБ РФ · {{ card.rates.date }}</span>
+        </div>
+
+        <div class="visa-rates__grid">
+            <label class="rate-field">
+                <span class="rate-field__label">Рубль</span>
+                <span class="rate-field__box">
+                    <input class="rate-field__input"
+                           id="rate-rub"
+                           type="text"
+                           inputmode="decimal"
+                           value="1000"
+                           autocomplete="off"
+                           aria-label="Сумма в рублях">
+                    <span class="rate-field__code">RUB</span>
+                </span>
+            </label>
+
+            <label class="rate-field">
+                <span class="rate-field__label">{{ card.rates.local_name }}</span>
+                <span class="rate-field__box">
+                    <input class="rate-field__input"
+                           id="rate-local"
+                           type="text"
+                           inputmode="decimal"
+                           value=""
+                           autocomplete="off"
+                           aria-label="Сумма в местной валюте">
+                    <span class="rate-field__code">{{ card.rates.local_code }}</span>
+                </span>
+            </label>
+
+            <label class="rate-field">
+                <span class="rate-field__label">Доллар США</span>
+                <span class="rate-field__box">
+                    <input class="rate-field__input"
+                           id="rate-usd"
+                           type="text"
+                           inputmode="decimal"
+                           value=""
+                           autocomplete="off"
+                           aria-label="Сумма в долларах США">
+                    <span class="rate-field__code">USD</span>
+                </span>
+            </label>
+        </div>
+
+        <p class="visa-rates__note">
+            {{ card.rates.usd_line }} · {{ card.rates.local_line }}
+        </p>
+
+    </section>
+    {% endif %}
+
+    <p class="visa-note">{{ card.note }}</p>
+
+    <a class="visa-source"
+       href="{{ card.source_url }}"
+       target="_blank"
+       rel="noopener noreferrer">
+        Источник: {{ card.source_label }} →
+    </a>
+
+    <footer class="visa-foot">
+        <span>
+            {{ country.region }}{% if country.sub_region %} · {{ country.sub_region }}{% endif %}
+        </span>
+        <span>ISO {{ country.alpha_2 }}</span>
+        {% if country.groups %}
+            <span>
+                Входит в:
+                {% for group in country.groups %}{{ group.name }}{% if not forloop.last %}, {% endif %}{% endfor %}
+            </span>
+        {% endif %}
+    </footer>
+
+</article>
+
+{% if card.rates %}
+<script src="{% static 'main/currency.js' %}" defer></script>
+{% endif %}

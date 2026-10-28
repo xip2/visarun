@@ -1,0 +1,454 @@
+/* ===== СТРАНИЦА-КАРТОЧКА БЕЗВИЗОВОГО РЕЖИМА ===== */
+
+.country-card--visa {
+    padding: 34px 38px 26px;
+}
+
+/* ===== ШАПКА ===== */
+
+.visa-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #eef1f4;
+}
+
+.visa-head__identity {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    min-width: 0;
+}
+
+.visa-head__flag {
+    flex-shrink: 0;
+    width: 72px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 6px;
+    box-shadow:
+        0 0 0 1px rgba(17, 24, 39, 0.08),
+        0 2px 6px rgba(17, 24, 39, 0.12);
+}
+
+.visa-head__text {
+    min-width: 0;
+}
+
+.visa-head__kicker {
+    margin-bottom: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #6b7280;
+}
+
+.visa-head__title {
+    font-size: 34px;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.8px;
+    color: #111827;
+}
+
+.visa-head__rule {
+    margin-top: 6px;
+    font-size: 15px;
+    line-height: 1.45;
+    color: #4b5563;
+}
+
+.visa-head__status {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 13px;
+    border-radius: 999px;
+    background: #dcfce7;
+    color: #166534;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.visa-head__status::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+/* ===== ДАТЫ ===== */
+
+.visa-dates {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 22px 0;
+    border-bottom: 1px solid #eef1f4;
+}
+
+.visa-dates > div {
+    padding: 0 22px;
+}
+
+.visa-dates > div:first-child {
+    padding-left: 0;
+}
+
+.visa-dates > div + div {
+    border-left: 1px solid #eef1f4;
+}
+
+.visa-dates dt {
+    margin-bottom: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #6b7280;
+}
+
+.visa-dates dd {
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.2;
+    color: #111827;
+    font-variant-numeric: tabular-nums;
+}
+
+.visa-dates dd.visa-dates__open {
+    font-size: 15px;
+    font-weight: 500;
+    color: #4b5563;
+}
+
+/* ===== ФАКТЫ ===== */
+
+.visa-facts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px 28px;
+    padding-top: 22px;
+}
+
+.visa-facts__item {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.visa-facts__label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #6b7280;
+}
+
+.visa-facts__item strong {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.35;
+    color: #111827;
+}
+
+.visa-facts__muted {
+    font-size: 13px;
+    line-height: 1.4;
+    color: #6b7280;
+}
+
+/* ===== ГОРОДА ===== */
+
+.visa-cities {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    padding-top: 22px;
+}
+
+.visa-cities ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+.visa-cities li {
+    padding: 5px 11px;
+    border-radius: 999px;
+    background: #f3f4f6;
+    color: #374151;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+/* ===== НАСЕЛЕНИЕ ===== */
+
+.visa-people {
+    margin-top: 22px;
+    padding-top: 20px;
+    border-top: 1px solid #eef1f4;
+}
+
+.visa-people__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 4px 14px;
+}
+
+.visa-people__title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #111827;
+}
+
+.visa-people__note {
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+.visa-people__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-top: 14px;
+}
+
+.people-list__title {
+    margin-bottom: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #6b7280;
+}
+
+.people-list__row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 7px 0;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.people-list__row:last-child {
+    border-bottom: 0;
+}
+
+.people-list__row dt {
+    font-size: 14px;
+    line-height: 1.4;
+    color: #374151;
+}
+
+.people-list__row dd {
+    flex-shrink: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #111827;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+/* ===== КУРС ВАЛЮТ ===== */
+
+.visa-rates {
+    margin-top: 22px;
+    padding-top: 20px;
+    border-top: 1px solid #eef1f4;
+}
+
+.visa-rates__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 4px 14px;
+}
+
+.visa-rates__title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #111827;
+}
+
+.visa-rates__date {
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+.visa-rates__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 14px;
+}
+
+.rate-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.rate-field__label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #6b7280;
+}
+
+.rate-field__box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 12px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 9px;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.rate-field__box:focus-within {
+    border-color: #93c5fd;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+}
+
+.rate-field__input {
+    width: 100%;
+    min-width: 0;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    outline: 0;
+    font: inherit;
+    font-size: 16px;
+    font-weight: 600;
+    color: #111827;
+    font-variant-numeric: tabular-nums;
+}
+
+.rate-field__code {
+    flex-shrink: 0;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: #9ca3af;
+}
+
+.visa-rates__note {
+    margin-top: 10px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #9ca3af;
+}
+
+/* ===== ПРИМЕЧАНИЕ И ИСТОЧНИК ===== */
+
+.visa-note {
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px solid #eef1f4;
+    font-size: 14px;
+    line-height: 1.65;
+    color: #4b5563;
+}
+
+.visa-source {
+    display: inline-block;
+    margin-top: 10px;
+    color: #2563eb;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+.visa-source:hover {
+    text-decoration: underline;
+}
+
+/* ===== НИЖНЯЯ СТРОКА ===== */
+
+.visa-foot {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 20px;
+    margin-top: 22px;
+    padding-top: 14px;
+    border-top: 1px solid #eef1f4;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #9ca3af;
+}
+
+/* ===== АДАПТИВ ===== */
+
+@media (max-width: 768px) {
+    .country-card--visa {
+        padding: 22px 20px 20px;
+    }
+
+    .visa-head {
+        flex-direction: column;
+        gap: 14px;
+        padding-bottom: 20px;
+    }
+
+    .visa-head__identity {
+        gap: 14px;
+    }
+
+    .visa-head__flag {
+        width: 60px;
+        height: 40px;
+    }
+
+    .visa-head__title {
+        font-size: 27px;
+    }
+
+    .visa-head__status {
+        align-self: flex-start;
+    }
+
+    .visa-dates,
+    .visa-facts {
+        grid-template-columns: 1fr;
+    }
+
+    .visa-dates {
+        padding: 18px 0;
+    }
+
+    .visa-dates > div {
+        padding: 0;
+    }
+
+    .visa-dates > div + div {
+        padding-top: 14px;
+        border-left: 0;
+        border-top: 1px solid #eef1f4;
+    }
+
+    .visa-facts {
+        gap: 16px;
+        padding-top: 20px;
+    }
+
+    .visa-rates__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .visa-people__grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+}
