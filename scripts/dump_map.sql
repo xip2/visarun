@@ -1,0 +1,1 @@
+SELECT json_agg(j) :: text AS dump FROM (SELECT o.code, o.slug AS slug, COALESCE(ci.alpha_2, '') AS alpha2, o.name AS name FROM oksm o LEFT JOIN country_iso ci ON ci.oksm_code = o.code ORDER BY o.code) j;

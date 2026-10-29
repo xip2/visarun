@@ -163,6 +163,26 @@
     </section>
     {% endif %}
 
+    {% if card.unesco %}
+    <section class="visa-unesco" aria-labelledby="unesco-title">
+
+        <div class="visa-unesco__head">
+            <h2 class="visa-unesco__title" id="unesco-title">Достопримечательности</h2>
+            <span class="visa-unesco__note">{{ card.unesco_note }}</span>
+        </div>
+
+        <ul class="visa-unesco__list">
+            {% for site in card.unesco %}
+            <li class="visa-unesco__item">
+                {{ site.name }}
+                <span class="visa-unesco__year">{{ site.years }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+
+    </section>
+    {% endif %}
+
     <p class="visa-note">{{ card.note }}</p>
 
     <a class="visa-source"

@@ -352,6 +352,59 @@
     color: #9ca3af;
 }
 
+/* ===== ДОСТОПРИМЕЧАТЕЛЬНОСТИ ===== */
+
+.visa-unesco {
+    margin-top: 22px;
+    padding-top: 20px;
+    border-top: 1px solid #eef1f4;
+}
+
+.visa-unesco__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 4px 14px;
+}
+
+.visa-unesco__title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #111827;
+}
+
+.visa-unesco__note {
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+.visa-unesco__list {
+    list-style: none;
+    columns: 2;
+    column-gap: 36px;
+    margin-top: 14px;
+}
+
+.visa-unesco__item {
+    break-inside: avoid;
+    padding: 7px 0;
+    border-bottom: 1px solid #f3f4f6;
+    font-size: 14px;
+    line-height: 1.45;
+    color: #374151;
+}
+
+.visa-unesco__item:last-child {
+    border-bottom: 0;
+}
+
+.visa-unesco__year {
+    color: #9ca3af;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
 /* ===== ПРИМЕЧАНИЕ И ИСТОЧНИК ===== */
 
 .visa-note {
@@ -450,5 +503,9 @@
     .visa-people__grid {
         grid-template-columns: 1fr;
         gap: 18px;
+    }
+
+    .visa-unesco__list {
+        columns: 1;
     }
 }
