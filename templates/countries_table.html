@@ -28,7 +28,7 @@
                     hx-target="#countries-table"
                     hx-swap="innerHTML"
                 >
-                    Тип визы
+                    Требование
                     {% if sort_key == 'status' %}
                         <span class="sort-arrow">{% if sort_dir == 'asc' %}▲{% else %}▼{% endif %}</span>
                     {% endif %}
@@ -42,12 +42,13 @@
                     hx-target="#countries-table"
                     hx-swap="innerHTML"
                 >
-                    Кол-во дней без визы
+                    Дни
                     {% if sort_key == 'days' %}
                         <span class="sort-arrow">{% if sort_dir == 'asc' %}▲{% else %}▼{% endif %}</span>
                     {% endif %}
                 </a>
             </th>
+            <th>Стоимость визы</th>
         </tr>
     </thead>
 
@@ -61,6 +62,7 @@
             </td>
             <td>{{ rule.visa_status }}</td>
             <td>{{ rule.days }}</td>
+            <td>{{ rule.cost }}</td>
         </tr>
         {% empty %}
         <tr>

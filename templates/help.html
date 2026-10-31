@@ -30,10 +30,81 @@
                     <div class="help-status">
                         <dt>
                             <span class="badge badge-{{ status.key|slugify }}">{{ status.key }}</span>
-                            <span class="help-status-title">{{ status.title }}</span>
+                            {% if status.key == "visa-free" %}
+                                <span class="help-status-title">Без визы</span>
+                            {% elif status.key == "visa required" %}
+                                <span class="help-status-title">Нужна виза</span>
+                            {% elif status.key == "eVisa" %}
+                                <span class="help-status-title">Электронная виза</span>
+                            {% elif status.key == "visa on arrival" %}
+                                <span class="help-status-title">Виза по прибытии</span>
+                            {% elif status.key == "eTA" %}
+                                <span class="help-status-title">Электронное разрешение на въезд</span>
+                            {% elif status.key == "Arrival Card" %}
+                                <span class="help-status-title">Карточка прибытия</span>
+                            {% elif status.key == "pre-enrollment" %}
+                                <span class="help-status-title">Предварительная регистрация</span>
+                            {% elif status.key == "E-Ticket" %}
+                                <span class="help-status-title">Электронный билет</span>
+                            {% elif status.key == "eVisitors" %}
+                                <span class="help-status-title">Электронная регистрация посетителя</span>
+                            {% elif status.key == "tourist registration" %}
+                                <span class="help-status-title">Туристическая регистрация</span>
+                            {% elif status.key == "tourist card" %}
+                                <span class="help-status-title">Туристическая карта</span>
+                            {% else %}
+                                <span class="help-status-title">{{ status.key }}</span>
+                            {% endif %}
                             <span class="help-status-count">{{ status.count_label }}</span>
                         </dt>
-                        <dd>{{ status.description }}</dd>
+                        <dd>
+                            {% if status.key == "visa-free" %}
+                                Виза не нужна: страну можно посещать без предварительного
+                                разрешения. Ограничение по сроку пребывания указано в колонке
+                                «Кол-во дней без визы».
+                            {% elif status.key == "visa required" %}
+                                Виза оформляется заранее — в посольстве, консульстве или
+                                визовом центре. Без неё на границу не пустят, даже если есть
+                                обратный билет и бронь отеля.
+                            {% elif status.key == "eVisa" %}
+                                Заявка подаётся онлайн на официальном сайте страны.
+                                Разрешение приходит на e-mail, на границе его показывают
+                                распечатанным или на экране телефона. Это полноценная виза,
+                                просто без наклейки в паспорте.
+                            {% elif status.key == "visa on arrival" %}
+                                Оформляется прямо в аэропорту или на пункте пропуска.
+                                Обычно нужны анкета, фото и оплата сбора; иногда требуется
+                                подтверждение брони отеля и обратный билет.
+                            {% elif status.key == "eTA" %}
+                                Electronic Travel Authorization — не виза, а короткая
+                                онлайн-заявка, которая привязывается к паспорту.
+                                Оформляется до поездки, действует несколько лет,
+                                но пребывание в стране ограничено по срокам.
+                            {% elif status.key == "Arrival Card" %}
+                                Миграционная форма, которую заполняют перед посадкой или
+                                в самолёте. Это не виза и не разрешение на въезд — только
+                                учётные данные о поездке.
+                            {% elif status.key == "pre-enrollment" %}
+                                Поездку нужно зарегистрировать на сайте страны до вылета.
+                                Без подтверждения регистрации могут отказать в посадке
+                                или во въезде.
+                            {% elif status.key == "E-Ticket" %}
+                                Электронное разрешение или билет, который оформляется
+                                онлайн. Подтверждение предъявляется на границе.
+                            {% elif status.key == "eVisitors" %}
+                                Онлайн-анкета перед поездкой, по смыслу близка к eTA:
+                                подтверждение приходит на e-mail и проверяется на границе.
+                            {% elif status.key == "tourist registration" %}
+                                Данные о поездке подаются в миграционную службу —
+                                до въезда или сразу после него. Часто делается отелем
+                                или принимающей стороной.
+                            {% elif status.key == "tourist card" %}
+                                Документ или сбор для туристов: оформляется по прибытии
+                                или онлайн, действует ограниченный срок.
+                            {% else %}
+                                Значение из базы данных, описание пока не добавлено.
+                            {% endif %}
+                        </dd>
                     </div>
                     {% endfor %}
                 </dl>

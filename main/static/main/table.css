@@ -130,9 +130,9 @@ body {
 }
 
 .table-wrapper th {
-    background-color: #f9fafb;
+    background-color: #d1d5db; /* было #f9fafb — на 3 тона темнее */
     font-weight: 500;
-    color: #374151;
+    color: #1f2937;
     text-transform: uppercase;
     font-size: 13px;
     letter-spacing: 0.5px;
@@ -178,19 +178,66 @@ body {
 
 
 fieldset {
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #e8e8e8;
+    border-radius: 12px;
+    padding: 12px 14px;
     min-width: 180px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
 }
 
 fieldset label {
     display: block;
     margin: 6px 0;
+    font-size: 14px;
+}
+
+/* Чекбокс в стиле DNS-shop: квадрат со скруглением,
+   отмеченный — оранжевый с белой галочкой */
+fieldset label input[type="checkbox"] {
+    appearance: none;
+    width: 17px;
+    height: 17px;
+    border: 1px solid #d5d5d5;
+    border-radius: 4px;
+    background-color: #fff;
+    vertical-align: -4px;
+    margin-right: 8px;
+    cursor: pointer;
+    position: relative;
+    transition: border-color 0.15s, background-color 0.15s;
+}
+
+fieldset label input[type="checkbox"]:hover {
+    border-color: #ff6a00;
+}
+
+fieldset label input[type="checkbox"]:checked {
+    background-color: #ff6a00;
+    border-color: #ff6a00;
+}
+
+fieldset label input[type="checkbox"]:checked::after {
+    content: "✓";
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -52%);
 }
 
 legend {
     font-weight: bold;
+}
+
+/* Счётчик рядом с галочкой: (75), бледно-серый, как у DNS */
+.filter-count {
+    color: #b8b8b8;
+    font-style: normal;
+    font-size: 13px;
+    margin-left: 4px;
 }
 
 .search-box {
@@ -298,6 +345,13 @@ legend {
     font-size: 32px;
     font-weight: 700;
     letter-spacing: -0.5px;
+}
+
+.country-flag {
+    display: block;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    border: 1px solid #e5e7eb;
 }
 
 .badge {

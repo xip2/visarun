@@ -10,6 +10,7 @@
             <div class="visa-head__text">
                 <p class="visa-head__kicker">Безвизовый режим</p>
                 <h1 class="visa-head__title">{{ country.name }}</h1>
+                {% if pretrip %}<p class="country-subtitle">{{ pretrip.subtitle }}</p>{% endif %}
                 <p class="visa-head__rule">{{ card.rule }}</p>
             </div>
         </div>
@@ -17,11 +18,23 @@
         <span class="visa-head__status">{{ card.status }}</span>
     </header>
 
-    <dl class="visa-dates">
-        <div>
-            <dt>Подписано</dt>
-            <dd>{{ card.signed }}</dd>
+    {% if pretrip %}
+    <section class="visa-people pretrip" aria-labelledby="pretrip-title">
+        <div class="visa-people__head">
+            <h2 class="visa-people__title" id="pretrip-title">Перед поездкой</h2>
         </div>
+        <div class="pretrip-grid">
+            {% for item in pretrip.cards %}
+            <div class="pretrip-card">
+                <h3>{{ item.title }}</h3>
+                <p>{{ item.text }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    <dl class="visa-dates">
         <div>
             <dt>Действует с</dt>
             <dd>{{ card.from }}</dd>

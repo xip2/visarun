@@ -24,16 +24,31 @@
                         <label>
                             <input type="checkbox" name="visa_free">
                             Visa Free
+                            <span class="filter-count">({{ filter_counts.visa_free }})</span>
                         </label>
 
                         <label>
                             <input type="checkbox" name="evisa">
                             eVisa
+                            <span class="filter-count">({{ filter_counts.evisa }})</span>
                         </label>
 
                         <label>
                             <input type="checkbox" name="eta">
                             eTA
+                            <span class="filter-count">({{ filter_counts.eta }})</span>
+                        </label>
+
+                        <label>
+                            <input type="checkbox" name="visa_required">
+                            Visa required
+                            <span class="filter-count">({{ filter_counts.visa_required }})</span>
+                        </label>
+
+                        <label>
+                            <input type="checkbox" name="internal_passport">
+                            Внутренний паспорт
+                            <span class="filter-count">({{ filter_counts.internal_passport }})</span>
                         </label>
                     </fieldset>
 

@@ -87,7 +87,7 @@
 
 .visa-dates {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     padding: 22px 0;
     border-bottom: 1px solid #eef1f4;
 }
@@ -507,5 +507,42 @@
 
     .visa-unesco__list {
         columns: 1;
+    }
+}
+
+/* --- Перед поездкой --- */
+.country-subtitle {
+    margin: 4px 0 0;
+    color: #6b7684;
+    font-size: 14px;
+}
+
+.pretrip-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.pretrip-card {
+    padding: 14px 16px;
+    border: 1px solid #eef1f4;
+    border-radius: 10px;
+    background: #fafbfc;
+}
+
+.pretrip-card h3 {
+    margin: 0 0 4px;
+    font-size: 16px;
+}
+
+.pretrip-card p {
+    margin: 0;
+    color: #6b7684;
+    font-size: 14px;
+}
+
+@media (max-width: 640px) {
+    .pretrip-grid {
+        grid-template-columns: 1fr;
     }
 }

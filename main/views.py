@@ -9,9 +9,17 @@ from django.urls import reverse
 
 
 SORT_COLUMNS = {
-    "name": "oksm.name",
+    "name": "c.name_ru",
     "status": "vr.visa_status",
     "days": "vr.days",
+}
+
+
+# Стоимость визы для россиян (консульский сбор), если данных пока нет
+# в базе. Ключ — slug страны. Позже перенести в visa_rule.
+VISA_COSTS = {
+    # Шенген: консульский сбор 90 € (с 11.06.2024, действует и в 2026).
+    "austria": "90 €",
 }
 
 
@@ -526,86 +534,6 @@ except (OSError, ValueError):
 COUNTRY_CARDS = {**_cards_auto, **COUNTRY_CARDS}
 
 
-VISA_STATUS_HELP = [
-    (
-        "visa-free",
-        "Без визы",
-        "Виза не нужна: страну можно посещать без предварительного "
-        "разрешения. Ограничение по сроку пребывания указано в колонке "
-        "«Кол-во дней без визы».",
-    ),
-    (
-        "visa required",
-        "Нужна виза",
-        "Виза оформляется заранее — в посольстве, консульстве или "
-        "визовом центре. Без неё на границу не пустят, даже если есть "
-        "обратный билет и бронь отеля.",
-    ),
-    (
-        "eVisa",
-        "Электронная виза",
-        "Заявка подаётся онлайн на официальном сайте страны. "
-        "Разрешение приходит на e-mail, на границе его показывают "
-        "распечатанным или на экране телефона. Это полноценная виза, "
-        "просто без наклейки в паспорте.",
-    ),
-    (
-        "visa on arrival",
-        "Виза по прибытии",
-        "Оформляется прямо в аэропорту или на пункте пропуска. "
-        "Обычно нужны анкета, фото и оплата сбора; иногда требуется "
-        "подтверждение брони отеля и обратный билет.",
-    ),
-    (
-        "eTA",
-        "Электронное разрешение на въезд",
-        "Electronic Travel Authorization — не виза, а короткая "
-        "онлайн-заявка, которая привязывается к паспорту. "
-        "Оформляется до поездки, действует несколько лет, "
-        "но пребывание в стране ограничено по срокам.",
-    ),
-    (
-        "Arrival Card",
-        "Карточка прибытия",
-        "Миграционная форма, которую заполняют перед посадкой или "
-        "в самолёте. Это не виза и не разрешение на въезд — только "
-        "учётные данные о поездке.",
-    ),
-    (
-        "pre-enrollment",
-        "Предварительная регистрация",
-        "Поездку нужно зарегистрировать на сайте страны до вылета. "
-        "Без подтверждения регистрации могут отказать в посадке "
-        "или во въезде.",
-    ),
-    (
-        "E-Ticket",
-        "Электронный билет",
-        "Электронное разрешение или билет, который оформляется "
-        "онлайн. Подтверждение предъявляется на границе.",
-    ),
-    (
-        "eVisitors",
-        "Электронная регистрация посетителя",
-        "Онлайн-анкета перед поездкой, по смыслу близка к eTA: "
-        "подтверждение приходит на e-mail и проверяется на границе.",
-    ),
-    (
-        "tourist registration",
-        "Туристическая регистрация",
-        "Данные о поездке подаются в миграционную службу — "
-        "до въезда или сразу после него. Часто делается отелем "
-        "или принимающей стороной.",
-    ),
-    (
-        "tourist card",
-        "Туристическая карта",
-        "Документ или сбор для туристов: оформляется по прибытии "
-        "или онлайн, действует ограниченный срок.",
-    ),
-]
-
-
 def plural_ru(number, one, few, many):
     """Русская форма множественного числа: 1 страна / 2 страны / 5 стран."""
     number = abs(number) % 100
@@ -628,42 +556,21 @@ def help_page(request):
         """)
         counts = dict(cursor.fetchall())
 
-        cursor.execute("SELECT COUNT(*) FROM oksm")
+        cursor.execute("SELECT COUNT(*) FROM countries")
         countries_total = cursor.fetchone()[0]
 
+    # Описания статусов живут в шаблоне help.html — там ветки
+    # if/elif по status.key. Здесь только счётчики из базы.
     statuses = []
-    known = set()
-
-    for key, title, description in VISA_STATUS_HELP:
-        known.add(key)
-        count = counts.get(key, 0)
+    for key, count in sorted(counts.items()):
         statuses.append({
             "key": key,
-            "title": title,
-            "description": description,
             "count": count,
             "count_label": (
                 f"{count} {plural_ru(count, 'страна', 'страны', 'стран')}"
                 if count
                 else "нет данных"
             ),
-        })
-
-    # Статусы, которых нет в справочнике, показываем без описания,
-    # чтобы страница не разошлась с базой.
-    extra = sorted(
-        (key, count)
-        for key, count in counts.items()
-        if key and key not in known
-    )
-
-    for key, count in extra:
-        statuses.append({
-            "key": key,
-            "title": key,
-            "description": "Значение из базы данных, описание пока не добавлено.",
-            "count": count,
-            "count_label": f"{count} {plural_ru(count, 'страна', 'страны', 'стран')}",
         })
 
     total = sum(counts.values())
@@ -695,16 +602,34 @@ def countries(request):
     if sort_dir not in ("asc", "desc"):
         sort_dir = "asc"
 
+    # Страны, куда россияне могут въехать по внутреннему паспорту РФ.
+    # Отдельного признака в базе нет — задаём списком названий из oksm.
+    INTERNAL_PASSPORT_COUNTRIES = [
+        "Беларусь",
+        "Казахстан",
+        "Киргизия",
+        "Таджикистан",
+        "Армения",
+        "Абхазия",
+        "Южная Осетия",
+    ]
+
     status_filters = [
         ("visa_free", "visa-free"),
         ("evisa", "eVisa"),
         ("eta", "eTA"),
+        ("visa_required", "visa required"),
     ]
     status_values = [
         value
         for param, value in status_filters
         if request.GET.get(param)
     ]
+
+    if request.GET.get("internal_passport"):
+        placeholders = ", ".join(["%s"] * len(INTERNAL_PASSPORT_COUNTRIES))
+        conditions.append(f"c.name_ru IN ({placeholders})")
+        params.extend(INTERNAL_PASSPORT_COUNTRIES)
 
     region_filters = [
         ("sea", "sub_region", "South-eastern Asia"),
@@ -725,7 +650,7 @@ def countries(request):
 
     if regions:
         region_sql = " OR ".join(
-            f"ci.{field} = %s"
+            f"c.{field} = %s"
             for field, _ in regions
         )
         conditions.append(f"({region_sql})")
@@ -735,9 +660,9 @@ def countries(request):
         conditions.append("""
             EXISTS (
                 SELECT 1
-                FROM oksm_groups og
-                WHERE og.country_id = oksm.code
-                  AND og.group_id = 65100
+                FROM country_group cg
+                WHERE cg.country_id = c.country_id
+                  AND cg.group_id = 65100
             )
         """)
 
@@ -745,9 +670,9 @@ def countries(request):
         conditions.append("""
             EXISTS (
                 SELECT 1
-                FROM oksm_groups og
-                WHERE og.country_id = oksm.code
-                  AND og.group_id = 65517
+                FROM country_group cg
+                WHERE cg.country_id = c.country_id
+                  AND cg.group_id = 65517
             )
         """)
     if search:
@@ -764,14 +689,14 @@ def countries(request):
                 .replace("%", "\\%")
                 .replace("_", "\\_")
             )
-            search_conditions = ["REPLACE(LOWER(oksm.name), 'ё', 'е') LIKE %s"]
+            search_conditions = ["REPLACE(LOWER(c.name_ru), 'ё', 'е') LIKE %s"]
             search_params = [f"{escaped}%"]
 
             # Тот же поиск по алиасам: «Америка», «США» и т.п.
             alias_names = matched_alias_names(normalized)
             if alias_names:
                 placeholders = ", ".join(["%s"] * len(alias_names))
-                search_conditions.append(f"oksm.name IN ({placeholders})")
+                search_conditions.append(f"c.name_ru IN ({placeholders})")
                 search_params.extend(alias_names)
 
             conditions.append("(" + " OR ".join(search_conditions) + ")")
@@ -779,15 +704,13 @@ def countries(request):
 
     query = """
         SELECT
-            oksm.name AS name,
-            oksm.slug AS slug,
+            c.name_ru AS name,
+            c.slug AS slug,
             COALESCE(vr.visa_status, '-') AS visa_status,
             COALESCE(vr.days::text, '-') AS days
-        FROM oksm
-        LEFT JOIN country_iso ci
-            ON ci.oksm_code = oksm.code
+        FROM countries c
         LEFT JOIN visa_rule vr
-            ON vr.oksm_code = oksm.code
+            ON vr.country_id = c.country_id
     """
 
     if conditions:
@@ -795,7 +718,7 @@ def countries(request):
 
     order = f"{SORT_COLUMNS[sort_key]} {sort_dir.upper()} NULLS LAST"
     if sort_key != "name":
-        order += ", oksm.name ASC"
+        order += ", c.name_ru ASC"
 
     query += " ORDER BY " + order
 
@@ -807,6 +730,30 @@ def countries(request):
             dict(zip(columns, row))
             for row in cursor.fetchall()
         ]
+
+    # Стоимость визы пока задаём словарём VISA_COSTS, а не из базы.
+    for rule in rules:
+        rule["cost"] = VISA_COSTS.get(rule.get("slug")) or ""
+
+    # Счётчики для подписей под галочками в блоке «Тип визы»:
+    # сколько всего стран у каждого типа (по всей базе, без учёта
+    # других фильтров). В шаблоне выводится в виде "(75)".
+    with connection.cursor() as cursor:
+        cursor.execute("""
+            SELECT visa_status, COUNT(*)
+            FROM visa_rule
+            WHERE country_id IS NOT NULL
+            GROUP BY visa_status
+        """)
+        status_totals = dict(cursor.fetchall())
+
+    filter_counts = {
+        "visa_free": status_totals.get("visa-free", 0),
+        "evisa": status_totals.get("eVisa", 0),
+        "eta": status_totals.get("eTA", 0),
+        "visa_required": status_totals.get("visa required", 0),
+        "internal_passport": len(INTERNAL_PASSPORT_COUNTRIES),
+    }
 
     template = (
         "countries_table.html"
@@ -833,9 +780,36 @@ def countries(request):
             for key in SORT_COLUMNS
         },
         "is_htmx": bool(request.headers.get("HX-Request")),
+        "filter_counts": filter_counts,
     }
 
     return render(request, template, context)
+
+
+# Блок "Перед поездкой" — пока только для одной страны (Турция).
+PRETRIP_TITLES = {
+    "turkey": {
+        "subtitle": "Соглашение об условиях взаимных поездок граждан",
+        "cards": [
+            {
+                "title": "Правила въезда",
+                "text": "Статус, допустимый срок пребывания и условия",
+            },
+            {
+                "title": "Паспорт",
+                "text": "Требования к сроку действия",
+            },
+            {
+                "title": "Перелёт и транзит",
+                "text": "Маршрут, пересадки и ограничения",
+            },
+            {
+                "title": "Страховка",
+                "text": "Обязательность и рекомендуемое покрытие",
+            },
+        ],
+    },
+}
 
 
 def country_detail(request, slug):
@@ -851,22 +825,20 @@ def country_detail(request, slug):
     with connection.cursor() as cursor:
         cursor.execute("""
             SELECT
-                oksm.code,
-                oksm.name,
-                oksm.slug,
+                c.country_id AS code,
+                c.name_ru AS name,
+                c.slug,
                 COALESCE(vr.visa_status, '-') AS visa_status,
                 vr.days,
-                ci.name AS iso_name,
-                ci.alpha_2,
-                ci.alpha_3,
-                ci.region,
-                ci.sub_region
-            FROM oksm
-            LEFT JOIN country_iso ci
-                ON ci.oksm_code = oksm.code
+                c.name_en AS iso_name,
+                c.alpha_2,
+                c.alpha_3,
+                c.region,
+                c.sub_region
+            FROM countries c
             LEFT JOIN visa_rule vr
-                ON vr.oksm_code = oksm.code
-            WHERE oksm.slug = ANY(%s)
+                ON vr.country_id = c.country_id
+            WHERE c.slug = ANY(%s)
         """, [slugs])
 
         row = cursor.fetchone()
@@ -877,10 +849,10 @@ def country_detail(request, slug):
         country = dict(zip(columns, row))
 
         cursor.execute("""
-            SELECT g.code, g.eu_name, g.name
-            FROM oksm_groups og
-            JOIN groups g ON g.code = og.group_id
-            WHERE og.country_id = %s
+            SELECT g.group_id, g.eu_name, g.name
+            FROM country_group cg
+            JOIN groups g ON g.group_id = cg.group_id
+            WHERE cg.country_id = %s
             ORDER BY g.name
         """, [country["code"]])
 
@@ -892,17 +864,17 @@ def country_detail(request, slug):
 
         cursor.execute("""
             SELECT DISTINCT
-                oksm.name AS name,
-                oksm.slug AS slug,
+                c.name_ru AS name,
+                c.slug AS slug,
                 COALESCE(vr.visa_status, '-') AS visa_status
-            FROM oksm_groups og
-            JOIN oksm ON oksm.code = og.country_id
-            LEFT JOIN visa_rule vr ON vr.oksm_code = oksm.code
-            WHERE og.group_id IN (
-                SELECT group_id FROM oksm_groups WHERE country_id = %s
+            FROM country_group cg
+            JOIN countries c ON c.country_id = cg.country_id
+            LEFT JOIN visa_rule vr ON vr.country_id = c.country_id
+            WHERE cg.group_id IN (
+                SELECT group_id FROM country_group WHERE country_id = %s
             )
-              AND oksm.code <> %s
-            ORDER BY oksm.name
+              AND c.country_id <> %s
+            ORDER BY name
         """, [country["code"], country["code"]])
 
         columns = [col[0] for col in cursor.description]
@@ -911,34 +883,47 @@ def country_detail(request, slug):
             for neighbour in cursor.fetchall()
         ]
 
+    # Флаг берём напрямую из static/main/flags/<slug>.svg,
+    # без генерённых json-справочников. Для Абхазии, ДНР, ЛНР
+    # и других стран без ISO-кода файла нет — тогда флага
+    # и на странице не будет.
     db_slug = country.get("slug") or ""
+    flag_path = Path(__file__).resolve().parent / "static" / "main" / "flags" / f"{db_slug}.svg"
+    country["flag"] = f"main/flags/{db_slug}.svg" if flag_path.exists() else ""
+
     card_slug = slug if slug in COUNTRY_CARDS else (
         db_slug if db_slug in COUNTRY_CARDS else slug_alias_reverse.get(db_slug, "")
+    )
+
+    pretrip = (
+        PRETRIP_TITLES.get(card_slug)
+        or PRETRIP_TITLES.get(db_slug)
+        or PRETRIP_TITLES.get(slug)
+        or PRETRIP_TITLES.get(slug_alias_reverse.get(db_slug, ""))
     )
 
     return render(request, "country_detail.html", {
         "country": country,
         "card": COUNTRY_CARDS.get(card_slug),
+        "pretrip": pretrip,
     })
 
 
 def world_map(request):
     with connection.cursor() as cursor:
         cursor.execute("""
-            SELECT DISTINCT ON (UPPER(ci.alpha_2))
-                UPPER(ci.alpha_2) AS iso,
-                oksm.name,
-                oksm.slug,
+            SELECT DISTINCT ON (UPPER(c.alpha_2))
+                UPPER(c.alpha_2) AS iso,
+                c.name_ru AS name,
+                c.slug AS slug,
                 COALESCE(vr.visa_status, '-') AS visa_status,
                 vr.days
-            FROM oksm
-            JOIN country_iso ci
-                ON ci.oksm_code = oksm.code
+            FROM countries c
             LEFT JOIN visa_rule vr
-                ON vr.oksm_code = oksm.code
-            WHERE ci.alpha_2 IS NOT NULL
-              AND oksm.slug IS NOT NULL
-            ORDER BY UPPER(ci.alpha_2), oksm.name
+                ON vr.country_id = c.country_id
+            WHERE c.alpha_2 IS NOT NULL
+              AND c.slug IS NOT NULL
+            ORDER BY UPPER(c.alpha_2), c.name_ru
         """)
         rows = cursor.fetchall()
 
