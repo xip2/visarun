@@ -117,12 +117,12 @@ SELECT setval(
 );
 
 -- ------------------------------------------------------------
--- 4. visa_rule — visa_rule_with_id.csv, первая колонка = id
+-- 4. visa_rule — visa_rule.csv, первая колонка = country_id
 --    (понадобится NULL для Косово). Формат остатка прежний:
 --    2=имя 3=статус 4=дни 5=статус2 6=дни2 ...
 -- ------------------------------------------------------------
 CREATE TEMP TABLE _vr_raw (line text);
-\copy _vr_raw (line) FROM 'main/data/visa_rule_with_id.csv' WITH (FORMAT text)
+\copy _vr_raw (line) FROM 'main/data/visa_rule.csv' WITH (FORMAT text)
 
 INSERT INTO visa_rule (name, visa_status, days, country_id)
 SELECT
@@ -142,13 +142,12 @@ FROM (
 
 -- ------------------------------------------------------------
 -- 5. slug — из английского имени ISO; для не-ISO стран — вручную
+--    (в данных name_en всегда ASCII, unaccent не требуется)
 -- ------------------------------------------------------------
-CREATE EXTENSION IF NOT EXISTS unaccent;
-
 UPDATE countries
 SET slug = trim(both '-' from regexp_replace(
         regexp_replace(
-            unaccent(lower(replace(replace(COALESCE(name_en, name_ru), '''', ''), '.', ''))),
+            lower(replace(replace(COALESCE(name_en, name_ru), '''', ''), '.', '')),
             '[^a-z0-9]+', '-', 'g'
         ),
         '-+', '-', 'g'))
