@@ -23,4 +23,6 @@ jobs:
             if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
             python manage.py migrate --noinput
             python manage.py collectstatic --noinput
+            export PGPASSWORD="${{ secrets.DB_PASSWORD }}"
+            psql -h localhost -U "${{ secrets.DB_USER }}" -d "${{ secrets.DB_NAME }}" -f db/import.sql
             sudo systemctl restart visarun.service
