@@ -1,7 +1,9 @@
 asgiref==3.8.1
+backports.zoneinfo==0.2.1; python_version < "3.9"
 django==4.2.30
 gunicorn==23.0.0
 packaging==26.2
-psycopg2-binary==2.9.13
+psycopg2-binary==2.9.10; python_version < "3.9"
+psycopg2-binary==2.9.13; python_version >= "3.9"
 sqlparse==0.5.5
 typing-extensions==4.13.2
