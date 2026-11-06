@@ -272,20 +272,73 @@ fieldset label input[type="checkbox"]:checked::after {
 }
 
 legend {
-    font-weight: bold;
+    font-weight: 600;
+    font-size: 13px;
+    color: #111827;
+    padding: 0;
+    margin-bottom: 10px;
 }
 
-/* Счётчик рядом с галочкой: (75), бледно-серый, как у DNS */
+/* Карточки-фильтры в системе карточек (радиус шкалы 12px) */
+.filters fieldset {
+    border: 1px solid #eef1f4;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin: 0;
+    min-width: 0;
+    background: #fff;
+}
+
+/* Счётчик рядом с галочкой: (75) */
 .filter-count {
-    color: #b8b8b8;
-    font-style: normal;
-    font-size: 13px;
+    color: #9ca3af;
+    font-size: 12px;
     margin-left: 4px;
+}
+
+/* Фокус с клавиатуры (a11y, taste-skill: focus states) */
+fieldset label input[type="checkbox"]:focus-visible {
+    outline: 2px solid #9ca3af;
+    outline-offset: 2px;
 }
 
 .search-box {
     display: block;
-    margin-top: 10px;
+    margin-top: 4px;
+}
+
+/* Поиск в той же системе, что поля курса валют в карточке */
+.search-label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #6b7280;
+}
+
+.search-box input[type="text"] {
+    width: 100%;
+    padding: 10px 12px;
+    font: inherit;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #111827;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    outline: 0;
+    transition: border-color var(--dur-fast) ease, box-shadow var(--dur-fast) ease;
+}
+
+.search-box input::placeholder {
+    color: #9ca3af;
+}
+
+.search-box input:focus {
+    border-color: #93c5fd;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
 }
 
 .content {
@@ -303,6 +356,10 @@ legend {
 .sidebar {
     width: 260px;
     flex-shrink: 0;
+    position: sticky;
+    top: 16px;
+    max-height: calc(100vh - 32px);
+    overflow-y: auto;
 }
 
 .filters {
