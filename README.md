@@ -119,8 +119,3 @@ Roadmap:
 
 Визовые правила и факты приводятся со ссылками на первоисточники: `publication.pravo.gov.ru`, МИД РФ, информационные агентства, Википедия. У каждой ручной карточки есть поля `source_label` и `source_url` — источник видно прямо на странице.
 
-## Мои проекты
-
-- **[visarun](https://github.com/xip2/visarun)** — этот сервис
-- **[ai_voicebot](https://github.com/xip2/ai_voicebot)** — голосовой AI-бот (Go)
-- Профиль: [github.com/xip2](https://github.com/xip2) — Гребенщиков Владимир, Linux/SQL/DWH инженер, сейчас в AI-инжиниринге и автоматизации (n8n, LLM, Python)
