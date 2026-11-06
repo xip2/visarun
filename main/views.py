@@ -732,8 +732,18 @@ def countries(request):
         ]
 
     # Стоимость визы пока задаём словарём VISA_COSTS, а не из базы.
+    # Класс бейджа статуса — та же цветовая система, что в карточке страны.
+    STATUS_CLASS = {
+        "visa-free": "status-visa-free",
+        "evisa": "status-evisa",
+        "eta": "status-eta",
+        "visa required": "status-visa-required",
+        "visa on arrival": "status-visa-on-arrival",
+    }
     for rule in rules:
         rule["cost"] = VISA_COSTS.get(rule.get("slug")) or ""
+        raw_status = (rule.get("visa_status") or "").strip().lower()
+        rule["status_class"] = STATUS_CLASS.get(raw_status, "status-other")
 
     # Счётчики для подписей под галочками в блоке «Тип визы»:
     # сколько всего стран у каждого типа (по всей базе, без учёта

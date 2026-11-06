@@ -60,13 +60,15 @@
                     {{ rule.name }}
                 </a>
             </td>
-            <td>{{ rule.visa_status }}</td>
-            <td>{{ rule.days }}</td>
-            <td>{{ rule.cost }}</td>
+            <td>
+                <span class="status-pill {{ rule.status_class }}">{{ rule.visa_status }}</span>
+            </td>
+            <td class="num">{{ rule.days }}</td>
+            <td class="num">{{ rule.cost }}</td>
         </tr>
         {% empty %}
         <tr>
-            <td colspan="3" class="empty-row">
+            <td colspan="4" class="empty-row">
                 Ничего не найдено. Измените фильтры или запрос.
             </td>
         </tr>
