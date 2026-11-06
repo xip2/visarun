@@ -168,6 +168,32 @@ body {
     transition: background-color var(--dur-fast) ease;
 }
 
+/* Статус-бейджи (та же цветовая система, что бейдж «действует» в карточке) */
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.4;
+    white-space: nowrap;
+}
+
+.status-visa-free       { background: #dcfce7; color: #166534; }
+.status-evisa           { background: #fef3c7; color: #92400e; }
+.status-eta             { background: #dbeafe; color: #1d4ed8; }
+.status-visa-on-arrival { background: #ccfbf1; color: #0f766e; }
+.status-visa-required   { background: #f3f4f6; color: #374151; }
+.status-other           { background: #f3f4f6; color: #6b7280; }
+
+/* Числовые колонки: ровные цифры */
+.table-wrapper td.num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    color: #111827;
+}
+
 .table-wrapper tr:hover td {
     background-color: #e7eef5;
 }
