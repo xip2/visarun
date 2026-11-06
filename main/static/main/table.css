@@ -157,6 +157,10 @@ body {
 }
 
 /* Hover эффект */
+.table-wrapper td {
+    transition: background-color 0.15s ease;
+}
+
 .table-wrapper tr:hover td {
     background-color: #e7eef5;
 }
@@ -317,10 +321,15 @@ legend {
     color: #2563eb;
     text-decoration: none;
     font-size: 15px;
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 0% 1px;
+    transition: background-size 0.18s ease;
 }
 
 .back-link:hover {
-    text-decoration: underline;
+    background-size: 100% 1px;
 }
 
 .country-card {
@@ -456,11 +465,16 @@ legend {
     color: #111827;
     text-decoration: none;
     font-size: 15px;
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 0% 1px;
+    transition: color 0.15s ease, background-size 0.18s ease;
 }
 
 .neighbours a:hover {
     color: #2563eb;
-    text-decoration: underline;
+    background-size: 100% 1px;
 }
 
 .neighbour-status {
@@ -719,4 +733,18 @@ body.is-col-resizing * {
     text-align: center;
     color: #6b7280;
     font-size: 15px;
+}
+
+/* Понижение движения: hover-подчеркивание и строка — мгновенно */
+@media (prefers-reduced-motion: reduce) {
+    .back-link,
+    .neighbours a,
+    .table-wrapper td {
+        transition: none;
+    }
+
+    .back-link:hover,
+    .neighbours a:hover {
+        background-size: 100% 1px;
+    }
 }

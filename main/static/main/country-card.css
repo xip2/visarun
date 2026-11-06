@@ -27,7 +27,7 @@
     width: 72px;
     height: 48px;
     object-fit: cover;
-    border-radius: 6px;
+    border-radius: 8px;
     box-shadow:
         0 0 0 1px rgba(17, 24, 39, 0.08),
         0 2px 6px rgba(17, 24, 39, 0.12);
@@ -331,7 +331,7 @@
     padding: 9px 12px;
     background: #ffffff;
     border: 1px solid #e5e7eb;
-    border-radius: 9px;
+    border-radius: 8px;
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
@@ -439,10 +439,24 @@
     color: #2563eb;
     font-size: 13px;
     text-decoration: none;
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 0% 1px;
+    transition: background-size 0.18s ease;
 }
 
 .visa-source:hover {
-    text-decoration: underline;
+    background-size: 100% 1px;
+}
+
+/* Понижение движения: переходы ссылки и подчерк считаются мгновенными */
+@media (prefers-reduced-motion: reduce) {
+    .visa-source,
+    .visa-source:hover {
+        transition: none;
+        background-size: 100% 1px;
+    }
 }
 
 /* ===== НИЖНЯЯ СТРОКА ===== */
@@ -543,7 +557,7 @@
 .pretrip-card {
     padding: 14px 16px;
     border: 1px solid #eef1f4;
-    border-radius: 10px;
+    border-radius: 8px;
     background: #fafbfc;
 }
 
