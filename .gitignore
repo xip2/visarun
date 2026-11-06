@@ -17,3 +17,7 @@ db.sqlite3
 # OS
 .DS_Store
 Thumbs.db
+
+# Локальные файлы (не для репо)
+visarun.geany
+mid_file.*
